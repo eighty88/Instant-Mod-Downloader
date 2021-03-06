@@ -324,7 +324,7 @@ public class Main  extends JFrame implements ActionListener, MouseListener {
             exception.printStackTrace();
         }
         for(String s: Objects.requireNonNull(urls)) {
-            setTitle(config.getTitle() + " (" + i + "/" + (urls.size() + 1) + ")");
+            setTitle(config.getTitle() + " (" + i + "/" + urls.size() + ")");
             try {
                 Downloader downloader = new Downloader(s);
                 downloader.DownloadTo(modsFolder.getPath());
