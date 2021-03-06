@@ -11,3 +11,5 @@ MinecraftのModを簡単にインストールできるように作成した
  gradlew build
   - Linuxの場合
  ./gradlew build
+
+ [ZIP]:https://github.com/eighty88/Instant-Mod-Downloader/archive/main.zip
