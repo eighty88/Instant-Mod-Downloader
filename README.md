@@ -7,9 +7,7 @@ MinecraftのModを簡単にインストールできるように作成した
  2. ./modpack.jsonの中身を変更し、web上にアップロードしてください。
  3. ./src/main/resources/config.jsonを開き、updateJsonを書き換えます。
  4. 同梱されているGradle Wrapperでビルドを行います。
- '''
   - Windowsの場合
  gradlew build
   - Linuxの場合
  ./gradlew build
- '''
