@@ -9,20 +9,16 @@ import com.google.gson.reflect.TypeToken;
 import javax.imageio.ImageIO;
 import javax.swing.*;
 import java.awt.*;
-import java.awt.event.ActionEvent;
-import java.awt.event.ActionListener;
-import java.awt.event.MouseEvent;
-import java.awt.event.MouseListener;
+import java.awt.event.*;
 import java.awt.image.BufferedImage;
 import java.io.*;
 import java.net.URL;
 import java.util.List;
 import java.util.Objects;
 
-public class Main  extends JFrame implements ActionListener, MouseListener {
+public class Main extends JFrame implements ActionListener, MouseListener {
     static Config config;
 
-    private JLabel versionInfo = null;
     private JLabel labelFolder = null;
 
     private JPanel panelCenter = null;
@@ -65,7 +61,7 @@ public class Main  extends JFrame implements ActionListener, MouseListener {
             getButtonInstall().setEnabled(true);
             getButtonInstall().requestFocus();
         } catch (Exception ex) {
-            showErrorPopup(ex);
+            ex.printStackTrace();
         }
     }
 
@@ -74,7 +70,7 @@ public class Main  extends JFrame implements ActionListener, MouseListener {
 
         try {
             UIManager.setLookAndFeel(UIManager.getSystemLookAndFeelClassName());
-        } catch (ClassNotFoundException | IllegalAccessException | InstantiationException | UnsupportedLookAndFeelException e) {
+        } catch (Exception e) {
             e.printStackTrace();
         }
         Main main = new Main();
@@ -94,7 +90,7 @@ public class Main  extends JFrame implements ActionListener, MouseListener {
                 totalContentPane.add(getPanelCenter(), "Center");
                 totalContentPane.add(getPanelBottom(), "South");
             } catch (Throwable ivjExc) {
-                showErrorPopup(ivjExc);
+                ivjExc.printStackTrace();
             }
         }
         return totalContentPane;
@@ -105,43 +101,21 @@ public class Main  extends JFrame implements ActionListener, MouseListener {
             try {
                 (panelCenter = new JPanel()).setName("PanelCenter");
                 panelCenter.setLayout(null);
-                panelCenter.add(getVersionInfo(), getVersionInfo().getName());
                 panelCenter.add(getLabelFolder(), getLabelFolder().getName());
                 panelCenter.add(getFieldFolder(), getFieldFolder().getName());
                 panelCenter.add(getButtonFolder(), getButtonFolder().getName());
             } catch (Throwable ivjExc) {
-                showErrorPopup(ivjExc);
+                ivjExc.printStackTrace();
             }
         }
         return panelCenter;
-    }
-
-
-
-    private JLabel getVersionInfo() {
-        if (versionInfo == null) {
-            try {
-                h = 25;
-
-                versionInfo = new JLabel();
-                versionInfo.setName("LabelMcVersion");
-                versionInfo.setBounds(x, y, w, h);
-                versionInfo.setFont(new Font(Font.DIALOG, Font.BOLD, 14));
-                versionInfo.setHorizontalAlignment(SwingConstants.CENTER);
-                versionInfo.setPreferredSize(new Dimension(w, h));
-
-                y += h;
-            } catch (Throwable ivjExc) {
-                showErrorPopup(ivjExc);
-            }
-        }
-        return versionInfo;
     }
 
     private JLabel getLabelFolder() {
         if (labelFolder == null) {
             h = 16;
             w = 30;
+            y = 25;
 
             x += 10; // Padding
 
@@ -152,7 +126,7 @@ public class Main  extends JFrame implements ActionListener, MouseListener {
                 labelFolder.setPreferredSize(new Dimension(w, h));
                 labelFolder.setText("");
             } catch (Throwable ivjExc) {
-                showErrorPopup(ivjExc);
+                ivjExc.printStackTrace();
             }
 
             x += w;
@@ -172,7 +146,7 @@ public class Main  extends JFrame implements ActionListener, MouseListener {
                 textFieldFolderLocation.setEditable(false);
                 textFieldFolderLocation.setPreferredSize(new Dimension(w, h));
             } catch (Throwable ivjExc) {
-                showErrorPopup(ivjExc);
+                ivjExc.printStackTrace();
             }
 
             x += w;
@@ -196,7 +170,7 @@ public class Main  extends JFrame implements ActionListener, MouseListener {
                 buttonChooseFolder.setBounds(x, y, w, h);
                 buttonChooseFolder.setPreferredSize(new Dimension(w, h));
             } catch (Throwable ivjExc) {
-                showErrorPopup(ivjExc);
+                ivjExc.printStackTrace();
             }
         }
         return buttonChooseFolder;
@@ -212,7 +186,7 @@ public class Main  extends JFrame implements ActionListener, MouseListener {
                 panelBottom.add(getButtonInstall(), getButtonInstall().getName());
                 panelBottom.add(getButtonClose(), getButtonClose().getName());
             } catch (Throwable ivjExc) {
-                showErrorPopup(ivjExc);
+                ivjExc.printStackTrace();
             }
         }
         return panelBottom;
@@ -229,7 +203,7 @@ public class Main  extends JFrame implements ActionListener, MouseListener {
                 buttonInstall.setPreferredSize(new Dimension(w, h));
                 buttonInstall.setText("Download");
             } catch (Throwable ivjExc) {
-                showErrorPopup(ivjExc);
+                ivjExc.printStackTrace();
             }
         }
         return buttonInstall;
@@ -246,7 +220,7 @@ public class Main  extends JFrame implements ActionListener, MouseListener {
                 buttonOpenFolder.setPreferredSize(new Dimension(w, h));
                 buttonOpenFolder.setText("Open Folder");
             } catch (Throwable ivjExc) {
-                showErrorPopup(ivjExc);
+                ivjExc.printStackTrace();
             }
         }
         return buttonOpenFolder;
@@ -262,7 +236,7 @@ public class Main  extends JFrame implements ActionListener, MouseListener {
                 buttonClose.setPreferredSize(new Dimension(w, h));
                 buttonClose.setText("Cancel");
             } catch (Throwable ivjExc) {
-                showErrorPopup(ivjExc);
+                ivjExc.printStackTrace();
             }
         }
         return buttonClose;
@@ -285,12 +259,10 @@ public class Main  extends JFrame implements ActionListener, MouseListener {
         if (e.getSource() == getButtonClose()) {
             dispose();
             System.exit(0);
-        }
-        if (e.getSource() == getButtonFolder()) {
+        } else if (e.getSource() == getButtonFolder()) {
             onFolderSelect();
-        }
-        if (e.getSource() == getButtonInstall()) {
-            onInstall();
+        } else if (e.getSource() == getButtonInstall()) {
+            onDownload();
         }
     }
 
@@ -298,24 +270,23 @@ public class Main  extends JFrame implements ActionListener, MouseListener {
     public void mouseClicked(MouseEvent e) {
     }
 
-    public void onInstall() {
+    public void onDownload() {
         try {
             File modsFolder = new File(getFieldFolder().getText());
             if (!modsFolder.exists()) {
                 showErrorMessage("Folder not found.");
                 return;
-            }
-            if (!modsFolder.isDirectory()) {
+            } else if (!modsFolder.isDirectory()) {
                 showErrorMessage("Not a folder.");
                 return;
             }
-            tryInstall(modsFolder);
+            tryDownload(modsFolder);
         } catch (Exception e) {
-            showErrorPopup(e);
+            e.printStackTrace();
         }
     }
 
-    private void tryInstall(File modsFolder) {
+    private void tryDownload(File modsFolder) {
         List<String> urls = null;
         int i = 0;
         try {
@@ -353,26 +324,6 @@ public class Main  extends JFrame implements ActionListener, MouseListener {
 
     public void showErrorMessage(String message) {
         JOptionPane.showMessageDialog(null, message, "Error", JOptionPane.ERROR_MESSAGE);
-    }
-
-    private static String getStacktraceText(Throwable ex) {
-        StringWriter stringWriter = new StringWriter();
-        ex.printStackTrace(new PrintWriter(stringWriter));
-        return stringWriter.toString().replace("\t", "  ");
-    }
-
-    private static void showErrorPopup(Throwable ex) {
-        ex.printStackTrace();
-
-        JTextArea textArea = new JTextArea(getStacktraceText(ex));
-        textArea.setEditable(false);
-        Font currentFont = textArea.getFont();
-        Font newFont = new Font(Font.MONOSPACED, currentFont.getStyle(), currentFont.getSize());
-        textArea.setFont(newFont);
-
-        JScrollPane errorScrollPane = new JScrollPane(textArea);
-        errorScrollPane.setPreferredSize(new Dimension(600, 400));
-        JOptionPane.showMessageDialog(null, errorScrollPane, "Error", JOptionPane.ERROR_MESSAGE);
     }
 
     @Override

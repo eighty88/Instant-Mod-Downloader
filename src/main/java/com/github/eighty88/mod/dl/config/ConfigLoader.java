@@ -13,9 +13,8 @@ public class ConfigLoader {
     public Config getConfig() {
         Gson gson = new Gson();
 
-        JsonReader reader = null;
-        String path = "/config.json";
-        try (InputStream is = getClass().getResourceAsStream(path);
+        JsonReader reader;
+        try (InputStream is = getClass().getResourceAsStream("/config.json");
              BufferedReader br = new BufferedReader(new InputStreamReader(is))) {
 
             reader = new JsonReader(br);

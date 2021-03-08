@@ -2,11 +2,11 @@ package com.github.eighty88.mod.dl.config;
 
 public class Config {
     private String title;
-    private String updateJson;
+    private String Json;
 
-    public Config(String title, String updateJson) {
+    public Config(String title, String Json) {
         this.title = title;
-        this.updateJson = updateJson;
+        this.Json = Json;
     }
 
     public String getTitle() {
@@ -14,6 +14,6 @@ public class Config {
     }
 
     public String getJsonURL() {
-        return updateJson;
+        return Json;
     }
 }

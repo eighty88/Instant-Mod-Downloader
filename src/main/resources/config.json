@@ -1,4 +1,4 @@
 {
   "title": "Instant Mod Downloader",
-  "updateJson": "https://example.org/download/modpack.json"
+  "Json": "https://example.org/modpack.json"
 }
