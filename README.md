@@ -8,8 +8,8 @@ MinecraftのModを簡単にインストールできるように作成した
  3. ./src/main/resources/config.jsonを開き、updateJsonを書き換えます。
  4. 同梱されているGradle Wrapperでビルドを行います。
   - Windowsの場合
- gradlew build
+ ```gradlew build```
   - Linuxの場合
- ./gradlew build
+ ```./gradlew build```
 
  [zip]:https://github.com/eighty88/Instant-Mod-Downloader/archive/main.zip
